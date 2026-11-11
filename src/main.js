@@ -33,20 +33,27 @@ const assetsUrl = new URL('../assets/', import.meta.url).href;
 async function fetchBytes(url, label) {
   const res = await fetch(url);
   if (!res.ok) throw new Error(`${label}: HTTP ${res.status} for ${url}`);
+  if (!res.body) return new Uint8Array(await res.arrayBuffer());
+  // content-length is only a progress hint: with content-encoding (GitHub Pages gzips) it is the
+  // compressed size, while the stream delivers the decoded bytes.
   const total = Number(res.headers.get('content-length')) || 0;
-  if (!res.body || !total) return new Uint8Array(await res.arrayBuffer());
-  const out = new Uint8Array(total);
+  const chunks = [];
   const reader = res.body.getReader();
   let got = 0;
   for (;;) {
     const { done, value } = await reader.read();
     if (done) break;
-    if (got + value.length > out.length) return new Uint8Array(await new Blob([out.subarray(0, got), value]).arrayBuffer());
-    out.set(value, got);
+    chunks.push(value);
     got += value.length;
-    status(`Loading ${label}… ${Math.round((100 * got) / total)}%`);
+    if (total) status(`Loading ${label}… ${Math.min(99, Math.round((100 * got) / total))}%`);
   }
-  return got === total ? out : out.subarray(0, got);
+  const out = new Uint8Array(got);
+  let at = 0;
+  for (const c of chunks) {
+    out.set(c, at);
+    at += c.length;
+  }
+  return out;
 }
 
 async function fetchText(url, label) {
