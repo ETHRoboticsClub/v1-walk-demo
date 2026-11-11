@@ -223,11 +223,12 @@ async function main() {
 
   // ---- camera mode: free (follows position) or chase (also turns with the robot) ----
   const chase = {
+    // chase unless ?cam=free or this browser last chose free
     on: params.get('cam') === 'chase' || (params.get('cam') !== 'free' && (() => {
       try {
-        return localStorage.getItem('v1walk.cam') === 'chase';
+        return localStorage.getItem('v1walk.cam') !== 'free';
       } catch {
-        return false;
+        return true;
       }
     })()),
     toggle() {
