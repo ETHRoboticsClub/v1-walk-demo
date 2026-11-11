@@ -221,6 +221,33 @@ async function main() {
   };
   anchorFrame();
 
+  // ---- camera mode: free (follows position) or chase (also turns with the robot) ----
+  const chase = {
+    on: params.get('cam') === 'chase' || (params.get('cam') !== 'free' && (() => {
+      try {
+        return localStorage.getItem('v1walk.cam') === 'chase';
+      } catch {
+        return false;
+      }
+    })()),
+    toggle() {
+      this.on = !this.on;
+      try {
+        localStorage.setItem('v1walk.cam', this.on ? 'chase' : 'free');
+      } catch {}
+      this.show();
+    },
+    show() {
+      const b = $('cam');
+      if (b) {
+        b.textContent = this.on ? 'chase' : 'free';
+        b.classList.toggle('on', this.on);
+      }
+    },
+  };
+  chase.show();
+  $('cam')?.addEventListener('click', () => chase.toggle());
+
   // ---- input: hold to drive ----
   const held = new Set();
   const updateCommand = () => {
@@ -243,6 +270,7 @@ async function main() {
       updateCommand();
       e.preventDefault();
     } else if (e.code === 'KeyR') resetRequested = true;
+    else if (e.code === 'KeyC') chase.toggle();
   });
   addEventListener('keyup', (e) => {
     if (held.delete(e.code)) updateCommand();
@@ -319,6 +347,13 @@ async function main() {
     const p = demo.sim.basePosition();
     last = { x: p[0], y: p[1] };
   }
+  // Chase camera (C, or ?cam=chase): the view also turns with the robot's heading, low-passed over
+  // CHASE_TAU_S so the torso's sway and the turn-in-place twist don't shake it; orbiting still works
+  // and is kept relative to the robot.
+  const CHASE_TAU_S = 0.4;
+  let camYaw = demo.sim.baseYaw();
+  let lastFrame = performance.now();
+  const wrap = (a) => Math.atan2(Math.sin(a), Math.cos(a));
   view.renderer.setAnimationLoop(() => {
     syncRobot();
     const p = demo.sim.basePosition();
@@ -329,6 +364,18 @@ async function main() {
     view.controls.target.y += dy;
     view.camera.position.x += dx;
     view.camera.position.y += dy;
+    const now = performance.now();
+    const frameS = Math.min(0.1, (now - lastFrame) / 1000);
+    lastFrame = now;
+    const dyaw = wrap(demo.sim.baseYaw() - camYaw) * (1 - Math.exp(-frameS / CHASE_TAU_S));
+    camYaw = wrap(camYaw + dyaw);
+    if (chase.on && dyaw) {
+      // turn the camera about the vertical through the orbit target
+      const t = view.controls.target, c = Math.cos(dyaw), s = Math.sin(dyaw);
+      const ox = view.camera.position.x - t.x, oy = view.camera.position.y - t.y;
+      view.camera.position.x = t.x + c * ox - s * oy;
+      view.camera.position.y = t.y + s * ox + c * oy;
+    }
     view.controls.target.z += 0.1 * (Math.max(p[2] + 0.15, 0.3) - view.controls.target.z);
     view.controls.update();
     view.sun.position.set(p[0] + 3, p[1] - 2, 6);

@@ -13,6 +13,7 @@ when WebGPU isn't available. The policy runs through a JavaScript port of the ro
 | hold <kbd>W</kbd> / <kbd>S</kbd> | walk forward / back (0.8 m/s) |
 | hold <kbd>A</kbd> / <kbd>D</kbd> | walk left / right (0.6 m/s) |
 | hold <kbd>Q</kbd> / <kbd>E</kbd> | turn left / right (0.6 rad/s); alone, it walks a tight circle (0.35 m/s forward), see below |
+| <kbd>C</kbd> (or the camera button) | camera: *free* (follows the robot's position) or *chase* (also turns with its heading, smoothed over 0.4 s); remembered, or set with `?cam=chase` / `?cam=free` |
 | <kbd>Space</kbd> | stop (release all keys) |
 | <kbd>R</kbd> | reset to standing at the origin |
 | mouse | drag to orbit, scroll to zoom (the camera follows the robot) |

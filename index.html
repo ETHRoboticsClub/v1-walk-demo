@@ -22,6 +22,8 @@
   .row { display: flex; justify-content: space-between; gap: 12px; }
   #help { bottom: 12px; left: 12px; max-width: calc(100vw - 24px); }
   kbd { display: inline-block; min-width: 18px; padding: 0 4px; border: 1px solid rgba(255,255,255,0.25); border-bottom-width: 2px; border-radius: 4px; text-align: center; font: 12px ui-monospace, monospace; margin-right: 2px; }
+  button.cam { font: 12px ui-monospace, monospace; padding: 0 6px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.25); background: transparent; color: inherit; cursor: pointer; }
+  button.cam.on { background: var(--accent); color: #002233; border-color: var(--accent); }
   kbd.on { background: var(--accent); color: #002233; border-color: var(--accent); }
   #status { top: 12px; right: 12px; max-width: min(360px, calc(100vw - 24px)); }
   #status.error { border-color: var(--bad); color: var(--bad); }
@@ -47,7 +49,7 @@
 </div>
 <div id="help" class="panel">
   <div>Hold <kbd data-k="KeyW">W</kbd><kbd data-k="KeyA">A</kbd><kbd data-k="KeyS">S</kbd><kbd data-k="KeyD">D</kbd> to walk, <kbd data-k="KeyQ">Q</kbd><kbd data-k="KeyE">E</kbd> to turn ·
-    <kbd>Space</kbd> stop · <kbd>R</kbd> reset · drag to orbit, scroll to zoom</div>
+    <kbd>Space</kbd> stop · <kbd>R</kbd> reset · <kbd>C</kbd> camera: <button id="cam" type="button" class="cam">free</button> · drag to orbit, scroll to zoom</div>
   <div class="muted">The policy steps from about 0.4 m/s; backward barely moves it. <a href="https://github.com/ETHRoboticsClub/v1-walk-demo">Source and notes</a></div>
 </div>
 <div id="status" class="panel">Loading…</div>
