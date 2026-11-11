@@ -2,6 +2,7 @@
 // and renders it with three.js. URL parameters:
 //   ?bundle=<name>   a folder under models/ (default walkglide2-2h; walkglide is the earlier policy), or a URL of a bundle folder
 //   ?ep=wasm|webgpu  force the onnxruntime execution provider (default: WebGPU when available)
+//   ?touch=1|0       show or hide the on-screen thumbsticks (default: shown on touch devices)
 
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
@@ -160,6 +161,63 @@ async function buildRobot(scene, sim) {
 
 // ---------------------------------------------------------------------------------------------
 
+// The thumbsticks: shown on touch devices (or ?touch=1), and as soon as the page sees a touch.
+// The left stick walks (up forward, sideways left/right), the right stick turns (left/right only).
+// Each follows its own pointer, so both work at once; releasing a stick zeroes it.
+const STICK_DEADZONE = 0.12;
+function setupSticks(sticks, onChange) {
+  const want = params.get('touch');
+  const show = () => document.body.classList.add('touch');
+  if (want === '1' || (want !== '0' && matchMedia('(any-pointer: coarse)').matches)) show();
+  if (want !== '0') addEventListener('pointerdown', (e) => e.pointerType === 'touch' && show(), { capture: true });
+
+  const bind = (el, horizontalOnly, set) => {
+    if (!el) return;
+    const knob = el.querySelector('.knob');
+    let id = null;
+    const move = (e) => {
+      const r = el.getBoundingClientRect();
+      const R = r.width / 2 - 14; // full deflection a little inside the rim
+      let dx = (e.clientX - (r.left + r.width / 2)) / R;
+      let dy = horizontalOnly ? 0 : (e.clientY - (r.top + r.height / 2)) / R;
+      const m = Math.hypot(dx, dy);
+      if (m > 1) (dx /= m), (dy /= m);
+      knob.style.transform = `translate(${dx * R}px, ${dy * R}px)`;
+      // rescale past the deadzone so the command starts at zero and still reaches the limit;
+      // quantize to 5 % so a resting thumb doesn't resend every step
+      const mc = Math.min(m, 1);
+      const k = mc > STICK_DEADZONE ? (mc - STICK_DEADZONE) / (1 - STICK_DEADZONE) / mc : 0;
+      const q = (x) => Math.round(20 * x) / 20 + 0;
+      // screen up is forward, screen right is the robot's right (−left)
+      set(q(-dy * k), q(-dx * k));
+      onChange();
+    };
+    const end = (e) => {
+      if (e.pointerId !== id) return;
+      id = null;
+      el.classList.remove('on');
+      knob.style.transform = '';
+      set(0, 0);
+      onChange();
+    };
+    el.addEventListener('pointerdown', (e) => {
+      if (id !== null) return;
+      id = e.pointerId;
+      el.setPointerCapture(id);
+      el.classList.add('on');
+      move(e);
+      e.preventDefault();
+    });
+    el.addEventListener('pointermove', (e) => e.pointerId === id && move(e));
+    el.addEventListener('pointerup', end);
+    el.addEventListener('pointercancel', end);
+    el.addEventListener('lostpointercapture', end);
+    el.addEventListener('contextmenu', (e) => e.preventDefault());
+  };
+  bind($('stick-walk'), false, (f, l) => (sticks.walk = [f, l]));
+  bind($('stick-turn'), true, (_f, l) => (sticks.turn = l));
+}
+
 const KEYS = { KeyW: [1, 0, 0], KeyS: [-1, 0, 0], KeyA: [0, 1, 0], KeyD: [0, -1, 0], KeyQ: [0, 0, 1], KeyE: [0, 0, -1] };
 
 async function main() {
@@ -239,23 +297,28 @@ async function main() {
       this.show();
     },
     show() {
-      const b = $('cam');
-      if (b) {
+      for (const b of [$('cam'), $('cam-touch')]) {
+        if (!b) continue;
         b.textContent = this.on ? 'chase' : 'free';
         b.classList.toggle('on', this.on);
       }
     },
   };
   chase.show();
-  $('cam')?.addEventListener('click', () => chase.toggle());
+  for (const id of ['cam', 'cam-touch']) $(id)?.addEventListener('click', () => chase.toggle());
 
-  // ---- input: hold to drive ----
+  // ---- input: hold to drive (keys), or the thumbsticks ----
   const held = new Set();
+  // stick deflections in [-1, 1]: walk = [forward, left], turn = left
+  const sticks = { walk: [0, 0], turn: 0 };
+  const clamp1 = (x) => Math.max(-1, Math.min(1, x));
   const updateCommand = () => {
-    const v = [0, 0, 0];
+    const v = [sticks.walk[0], sticks.walk[1], sticks.turn];
     for (const k of held) KEYS[k].forEach((x, i) => (v[i] += x));
-    const cmd = [v[0] * WALK.maxForward, v[1] * WALK.maxLateral, v[2] * WALK.maxYaw];
-    if (cmd[2] !== 0 && cmd[0] === 0 && cmd[1] === 0) cmd[0] = TURN_FORWARD;
+    const u = v.map(clamp1);
+    const cmd = [u[0] * WALK.maxForward, u[1] * WALK.maxLateral, u[2] * WALK.maxYaw];
+    // a turn alone walks a tight circle; a partial stick turn walks it proportionally slower
+    if (cmd[2] !== 0 && cmd[0] === 0 && cmd[1] === 0) cmd[0] = TURN_FORWARD * Math.abs(u[2]);
     demo.setCommand(cmd.map((x) => x + 0)); // +0: no -0
     document.querySelectorAll('kbd[data-k]').forEach((el) => el.classList.toggle('on', held.has(el.dataset.k)));
   };
@@ -280,6 +343,8 @@ async function main() {
     held.clear();
     updateCommand();
   });
+  setupSticks(sticks, updateCommand);
+  $('reset')?.addEventListener('click', () => (resetRequested = true));
 
   // ---- the sim loop: real time, or slower when the browser cannot keep up (never skips steps) ----
   const dt = demo.bundle.controlPeriod;
@@ -403,7 +468,7 @@ async function main() {
     $('gs').textContent = g ? (g.state === 'live' && g.ramp < 1 ? `live (ramp ${Math.round(100 * g.ramp)}%)` : g.state) : '–';
     const banner = $('banner');
     banner.style.display = demo.fell && !error ? 'block' : 'none';
-    banner.textContent = 'The robot fell. Press R to reset.';
+    banner.textContent = document.body.classList.contains('touch') ? 'The robot fell. Tap reset.' : 'The robot fell. Press R to reset.';
     view.renderer.render(view.scene, view.camera);
   });
 }

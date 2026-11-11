@@ -1,7 +1,7 @@
 # V1 walk demo
 
 The ETHRC Humanoid V1 simulated in [MuJoCo](https://mujoco.org) (WebAssembly) in the browser and walked with the
-keyboard. An InstantTrack teleop policy runs in [onnxruntime-web](https://onnxruntime.ai) on WebGPU, or on WASM
+keyboard or on-screen thumbsticks. An InstantTrack teleop policy runs in [onnxruntime-web](https://onnxruntime.ai) on WebGPU, or on WASM
 when WebGPU isn't available. The policy runs through a JavaScript port of the robot's own InstantTrack runtime.
 
 **Live:** https://ethroboticsclub.github.io/v1-walk-demo/
@@ -17,6 +17,11 @@ when WebGPU isn't available. The policy runs through a JavaScript port of the ro
 | <kbd>Space</kbd> | stop (release all keys) |
 | <kbd>R</kbd> | reset to standing at the origin |
 | mouse | drag to orbit, scroll to zoom (the camera follows the robot) |
+
+On touch devices (or with `?touch=1`; `?touch=0` hides them) two thumbsticks appear. The left one walks (up forward,
+left/right sideways) and the right one turns (left/right). Both are analog, scaled to the same limits as the keys, and
+work at the same time. Releasing a stick stops that motion. A turn alone walks the tight circle, slower for a partial
+turn. Drag elsewhere to orbit, pinch to zoom, and use the *reset* button in the help panel instead of <kbd>R</kbd>.
 
 Driving works like the robot dashboard's hold-to-drive pad. While a key is held, the page sends the velocity every
 0.1 s with a 0.5 s expiry, and it sends one zero when the key is released. The virtual root ramps toward the command

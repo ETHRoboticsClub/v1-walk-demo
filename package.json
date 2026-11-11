@@ -2,7 +2,7 @@
   "name": "v1-walk-demo",
   "version": "0.1.0",
   "private": true,
-  "description": "The ETHRC Humanoid V1 walked with the keyboard in the browser: MuJoCo WASM + an InstantTrack teleop policy on onnxruntime-web",
+  "description": "The ETHRC Humanoid V1 walked with the keyboard or thumbsticks in the browser: MuJoCo WASM + an InstantTrack teleop policy on onnxruntime-web",
   "type": "module",
   "scripts": {
     "check": "node test/headless.mjs",

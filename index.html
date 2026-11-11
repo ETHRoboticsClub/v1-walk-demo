@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>V1 walk demo</title>
 <link rel="icon" href="data:,">
-<meta name="description" content="The ETHRC Humanoid V1 in MuJoCo (WebAssembly), walked with the keyboard through an InstantTrack teleop policy run with onnxruntime-web.">
+<meta name="description" content="The ETHRC Humanoid V1 in MuJoCo (WebAssembly), walked with the keyboard or on-screen thumbsticks through an InstantTrack teleop policy run with onnxruntime-web.">
 <style>
   :root { --bg: #11161c; --panel: rgba(17, 22, 28, 0.82); --text: #e6edf3; --muted: #8b98a5; --accent: #5cc8ff; --warn: #ffb454; --bad: #ff6b6b; }
   * { box-sizing: border-box; }
@@ -30,6 +30,23 @@
   #banner { top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 15px; display: none; text-align: center; }
   a { color: var(--accent); }
   @media (max-width: 640px) { #hud { min-width: 0; font-size: 12px; } #status { top: auto; bottom: 120px; } }
+  /* thumbsticks (touch devices, or ?touch=1): left walks, right turns */
+  .touch-only, .stick { display: none; }
+  body.touch .touch-only { display: block; }
+  body.touch .key-only { display: none; }
+  body.touch .stick { display: block; }
+  .stick { position: fixed; bottom: calc(24px + env(safe-area-inset-bottom)); width: 128px; height: 128px; border-radius: 50%;
+    background: var(--panel); border: 1px solid rgba(255,255,255,0.12); backdrop-filter: blur(6px);
+    touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+  #stick-walk { left: calc(20px + env(safe-area-inset-left)); }
+  #stick-turn { right: calc(20px + env(safe-area-inset-right)); }
+  .stick .knob { position: absolute; left: 50%; top: 50%; width: 56px; height: 56px; margin: -28px 0 0 -28px; border-radius: 50%;
+    background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.35); pointer-events: none; }
+  .stick.on .knob { background: var(--accent); border-color: var(--accent); }
+  .stick .label { position: absolute; left: 0; right: 0; bottom: -17px; text-align: center; color: var(--muted); font-size: 11px; pointer-events: none; }
+  #stick-turn::before { content: ""; position: absolute; left: 14px; right: 14px; top: 50%; border-top: 1px dashed rgba(255,255,255,0.18); }
+  body.touch #help { bottom: calc(176px + env(safe-area-inset-bottom)); }
+  @media (max-width: 640px) { body.touch #status { bottom: calc(260px + env(safe-area-inset-bottom)); } }
 </style>
 </head>
 <body>
@@ -48,11 +65,14 @@
   <div class="row"><span class="muted">goal</span><span id="gs">–</span></div>
 </div>
 <div id="help" class="panel">
-  <div>Hold <kbd data-k="KeyW">W</kbd><kbd data-k="KeyA">A</kbd><kbd data-k="KeyS">S</kbd><kbd data-k="KeyD">D</kbd> to walk, <kbd data-k="KeyQ">Q</kbd><kbd data-k="KeyE">E</kbd> to turn ·
+  <div class="key-only">Hold <kbd data-k="KeyW">W</kbd><kbd data-k="KeyA">A</kbd><kbd data-k="KeyS">S</kbd><kbd data-k="KeyD">D</kbd> to walk, <kbd data-k="KeyQ">Q</kbd><kbd data-k="KeyE">E</kbd> to turn ·
     <kbd>Space</kbd> stop · <kbd>R</kbd> reset · <kbd>C</kbd> camera: <button id="cam" type="button" class="cam on">chase</button> · drag to orbit, scroll to zoom</div>
+  <div class="touch-only">Left stick walks, right stick turns · drag to orbit, pinch to zoom · camera: <button id="cam-touch" type="button" class="cam on">chase</button> · <button id="reset" type="button" class="cam">reset</button></div>
   <div class="muted">The robot lags the command (about 60 % of the distance; backward about a quarter). <a href="https://github.com/ETHRoboticsClub/v1-walk-demo">Source and notes</a></div>
 </div>
 <div id="status" class="panel">Loading…</div>
+<div id="stick-walk" class="stick"><span class="label">walk</span><div class="knob"></div></div>
+<div id="stick-turn" class="stick"><span class="label">turn</span><div class="knob"></div></div>
 <div id="banner" class="panel"></div>
 <script type="importmap">
 {
