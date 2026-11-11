@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>V1 walk demo</title>
+<link rel="icon" href="data:,">
+<meta name="description" content="The ETHRC Humanoid V1 in MuJoCo (WebAssembly), walked with the keyboard through an InstantTrack teleop policy run with onnxruntime-web.">
+<style>
+  :root { --bg: #11161c; --panel: rgba(17, 22, 28, 0.82); --text: #e6edf3; --muted: #8b98a5; --accent: #5cc8ff; --warn: #ffb454; --bad: #ff6b6b; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text); font: 13px/1.45 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; overflow: hidden; }
+  #view { position: fixed; inset: 0; }
+  .panel { position: fixed; background: var(--panel); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 12px; backdrop-filter: blur(6px); }
+  #hud { top: 12px; left: 12px; min-width: 250px; font-variant-numeric: tabular-nums; }
+  #hud h1 { font-size: 14px; margin: 0 0 6px; font-weight: 600; }
+  #hud table { border-collapse: collapse; width: 100%; }
+  #hud td { padding: 1px 6px 1px 0; }
+  #hud th { text-align: left; color: var(--muted); font-weight: 500; padding: 1px 6px 1px 0; }
+  #hud .num { text-align: right; }
+  .muted { color: var(--muted); }
+  .row { display: flex; justify-content: space-between; gap: 12px; }
+  #help { bottom: 12px; left: 12px; max-width: calc(100vw - 24px); }
+  kbd { display: inline-block; min-width: 18px; padding: 0 4px; border: 1px solid rgba(255,255,255,0.25); border-bottom-width: 2px; border-radius: 4px; text-align: center; font: 12px ui-monospace, monospace; margin-right: 2px; }
+  kbd.on { background: var(--accent); color: #002233; border-color: var(--accent); }
+  #status { top: 12px; right: 12px; max-width: min(360px, calc(100vw - 24px)); }
+  #status.error { border-color: var(--bad); color: var(--bad); }
+  #banner { top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 15px; display: none; text-align: center; }
+  a { color: var(--accent); }
+  @media (max-width: 640px) { #hud { min-width: 0; font-size: 12px; } #status { top: auto; bottom: 120px; } }
+</style>
+</head>
+<body>
+<div id="view"></div>
+<div id="hud" class="panel">
+  <h1>ETHRC Humanoid V1 · walk demo</h1>
+  <table>
+    <tr><th></th><th class="num">commanded</th><th class="num">actual</th></tr>
+    <tr><td>forward m/s</td><td class="num" id="cf">0.00</td><td class="num" id="af">0.00</td></tr>
+    <tr><td>left m/s</td><td class="num" id="cl">0.00</td><td class="num" id="al">0.00</td></tr>
+    <tr><td>yaw rad/s</td><td class="num" id="cy">0.00</td><td class="num" id="ay">0.00</td></tr>
+  </table>
+  <div class="row" style="margin-top:6px"><span class="muted">policy backend</span><span id="ep">–</span></div>
+  <div class="row"><span class="muted">real-time factor</span><span id="rtf">–</span></div>
+  <div class="row"><span class="muted">control step</span><span id="pms">–</span></div>
+  <div class="row"><span class="muted">goal</span><span id="gs">–</span></div>
+</div>
+<div id="help" class="panel">
+  <div>Hold <kbd data-k="KeyW">W</kbd><kbd data-k="KeyA">A</kbd><kbd data-k="KeyS">S</kbd><kbd data-k="KeyD">D</kbd> to walk, <kbd data-k="KeyQ">Q</kbd><kbd data-k="KeyE">E</kbd> to turn ·
+    <kbd>Space</kbd> stop · <kbd>R</kbd> reset · drag to orbit, scroll to zoom</div>
+  <div class="muted">The policy steps from about 0.4 m/s; backward barely moves it. <a href="https://github.com/ETHRoboticsClub/v1-walk-demo">Source and notes</a></div>
+</div>
+<div id="status" class="panel">Loading…</div>
+<div id="banner" class="panel"></div>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/",
+    "onnxruntime-web": "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.23.2/dist/ort.webgpu.min.mjs",
+    "@mujoco/mujoco": "https://cdn.jsdelivr.net/npm/@mujoco/mujoco@3.17.0/mujoco.js",
+    "js-yaml": "https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.mjs"
+  }
+}
+</script>
+<script type="module" src="src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,799 @@
+{
+"positionsBytes": 1180764,
+"indicesBytes": 2437188,
+"meshes": [
+{
+"body": "I_AP_L_1",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 0,
+"vertexCount": 981,
+"indexOffset": 0,
+"indexCount": 5958
+},
+{
+"body": "I_AP_L_1_1",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 981,
+"vertexCount": 961,
+"indexOffset": 5958,
+"indexCount": 5832
+},
+{
+"body": "I_AP_L_1_1_2",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 1942,
+"vertexCount": 996,
+"indexOffset": 11790,
+"indexCount": 6048
+},
+{
+"body": "I_AP_L_1_2",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 2938,
+"vertexCount": 948,
+"indexOffset": 17838,
+"indexCount": 5754
+},
+{
+"body": "I_AP_L_2_1",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 3886,
+"vertexCount": 898,
+"indexOffset": 23592,
+"indexCount": 5472
+},
+{
+"body": "I_AP_L_2_1_2",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 4784,
+"vertexCount": 895,
+"indexOffset": 29064,
+"indexCount": 5448
+},
+{
+"body": "I_AP_L_3_1",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 5679,
+"vertexCount": 982,
+"indexOffset": 34512,
+"indexCount": 5958
+},
+{
+"body": "I_AP_L_3_1_2",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 6661,
+"vertexCount": 929,
+"indexOffset": 40470,
+"indexCount": 5646
+},
+{
+"body": "I_FingerTipAssembly_1",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 7590,
+"vertexCount": 1259,
+"indexOffset": 46116,
+"indexCount": 7566
+},
+{
+"body": "I_FingerTipAssembly_1_1",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 8849,
+"vertexCount": 1250,
+"indexOffset": 53682,
+"indexCount": 7497
+},
+{
+"body": "I_FingerTipAssembly_1_1_2",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 10099,
+"vertexCount": 1283,
+"indexOffset": 61179,
+"indexCount": 7707
+},
+{
+"body": "I_FingerTipAssembly_1_2",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 11382,
+"vertexCount": 1238,
+"indexOffset": 68886,
+"indexCount": 7437
+},
+{
+"body": "I_FingerTipAssembly_2_1",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 12620,
+"vertexCount": 1176,
+"indexOffset": 76323,
+"indexCount": 7068
+},
+{
+"body": "I_FingerTipAssembly_2_1_2",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 13796,
+"vertexCount": 1153,
+"indexOffset": 83391,
+"indexCount": 6918
+},
+{
+"body": "I_FingerTipAssembly_3_1",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 14949,
+"vertexCount": 1260,
+"indexOffset": 90309,
+"indexCount": 7572
+},
+{
+"body": "I_FingerTipAssembly_3_1_2",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 16209,
+"vertexCount": 1222,
+"indexOffset": 97881,
+"indexCount": 7344
+},
+{
+"body": "I_PP_1",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 17431,
+"vertexCount": 907,
+"indexOffset": 105225,
+"indexCount": 5496
+},
+{
+"body": "I_PP_1_1",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 18338,
+"vertexCount": 847,
+"indexOffset": 110721,
+"indexCount": 5154
+},
+{
+"body": "I_PP_1_1_2",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 19185,
+"vertexCount": 859,
+"indexOffset": 115875,
+"indexCount": 5226
+},
+{
+"body": "I_PP_1_2",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 20044,
+"vertexCount": 890,
+"indexOffset": 121101,
+"indexCount": 5382
+},
+{
+"body": "I_PP_2_1",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 20934,
+"vertexCount": 925,
+"indexOffset": 126483,
+"indexCount": 5622
+},
+{
+"body": "I_PP_2_1_2",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 21859,
+"vertexCount": 912,
+"indexOffset": 132105,
+"indexCount": 5544
+},
+{
+"body": "I_PP_3_1",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 22771,
+"vertexCount": 855,
+"indexOffset": 137649,
+"indexCount": 5202
+},
+{
+"body": "I_PP_3_1_2",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 23626,
+"vertexCount": 824,
+"indexOffset": 142851,
+"indexCount": 5016
+},
+{
+"body": "L_Carpals_1",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 24450,
+"vertexCount": 6503,
+"indexOffset": 147867,
+"indexCount": 39504
+},
+{
+"body": "R_Carpals_1",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 30953,
+"vertexCount": 6565,
+"indexOffset": 187371,
+"indexCount": 39882
+},
+{
+"body": "R_T_AP_1",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 37518,
+"vertexCount": 862,
+"indexOffset": 227253,
+"indexCount": 5256
+},
+{
+"body": "R_T_AP_1_2",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 38380,
+"vertexCount": 804,
+"indexOffset": 232509,
+"indexCount": 4908
+},
+{
+"body": "T_FingerTipAssembly_1",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 39184,
+"vertexCount": 789,
+"indexOffset": 237417,
+"indexCount": 4746
+},
+{
+"body": "T_FingerTipAssembly_1_2",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 39973,
+"vertexCount": 794,
+"indexOffset": 242163,
+"indexCount": 4776
+},
+{
+"body": "T_PP_1",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 40767,
+"vertexCount": 759,
+"indexOffset": 246939,
+"indexCount": 4614
+},
+{
+"body": "T_PP_1_2",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 41526,
+"vertexCount": 734,
+"indexOffset": 251553,
+"indexCount": 4464
+},
+{
+"body": "T_TP_L_1",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 42260,
+"vertexCount": 421,
+"indexOffset": 256017,
+"indexCount": 2568
+},
+{
+"body": "T_TP_R_1",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 42681,
+"vertexCount": 487,
+"indexOffset": 258585,
+"indexCount": 2964
+},
+{
+"body": "WB71803_Kugelzapfen_WB71802_C16_ST_1",
+"rgba": [
+0.35199999809265137,
+0.35199999809265137,
+0.35199999809265137,
+1.0
+],
+"vertexOffset": 43168,
+"vertexCount": 2838,
+"indexOffset": 261549,
+"indexCount": 17274
+},
+{
+"body": "base_link",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 46006,
+"vertexCount": 14219,
+"indexOffset": 278823,
+"indexCount": 92448
+},
+{
+"body": "bottom_universal_joint_l_1",
+"rgba": [
+0.35199999809265137,
+0.35199999809265137,
+0.35199999809265137,
+1.0
+],
+"vertexOffset": 60225,
+"vertexCount": 2832,
+"indexOffset": 371271,
+"indexCount": 17262
+},
+{
+"body": "connector_1",
+"rgba": [
+0.35199999809265137,
+0.35199999809265137,
+0.35199999809265137,
+1.0
+],
+"vertexOffset": 63057,
+"vertexCount": 1117,
+"indexOffset": 388533,
+"indexCount": 6798
+},
+{
+"body": "connector_1_1",
+"rgba": [
+0.35199999809265137,
+0.35199999809265137,
+0.35199999809265137,
+1.0
+],
+"vertexOffset": 64174,
+"vertexCount": 1094,
+"indexOffset": 395331,
+"indexCount": 6660
+},
+{
+"body": "connector_2_1",
+"rgba": [
+0.35199999809265137,
+0.35199999809265137,
+0.35199999809265137,
+1.0
+],
+"vertexOffset": 65268,
+"vertexCount": 1094,
+"indexOffset": 401991,
+"indexCount": 6660
+},
+{
+"body": "connector_3_1",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 66362,
+"vertexCount": 1117,
+"indexOffset": 408651,
+"indexCount": 6798
+},
+{
+"body": "connector_elbow_forearm_l_1",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 67479,
+"vertexCount": 9920,
+"indexOffset": 415449,
+"indexCount": 61326
+},
+{
+"body": "connector_elbow_forearm_r_1",
+"rgba": [
+1.0,
+1.0,
+1.0,
+1.0
+],
+"vertexOffset": 77399,
+"vertexCount": 9929,
+"indexOffset": 476775,
+"indexCount": 61332
+},
+{
+"body": "hej50_arm_rotation_l_1",
+"rgba": [
+0.35199999809265137,
+0.35199999809265137,
+0.35199999809265137,
+1.0
+],
+"vertexOffset": 87328,
+"vertexCount": 350,
+"indexOffset": 538107,
+"indexCount": 2226
+},
+{
+"body": "hej50_arm_rotation_r_1",
+"rgba": [
+0.35199999809265137,
+0.35199999809265137,
+0.35199999809265137,
+1.0
+],
+"vertexOffset": 87678,
+"vertexCount": 350,
+"indexOffset": 540333,
+"indexCount": 2226
+},
+{
+"body": "hej90_hip_abduction_1",
+"rgba": [
+0.35199999809265137,
+0.35199999809265137,
+0.35199999809265137,
+1.0
+],
+"vertexOffset": 88028,
+"vertexCount": 762,
+"indexOffset": 542559,
+"indexCount": 4884
+},
+{
+"body": "hej90_knee_l_1",
+"rgba": [
+0.35199999809265137,
+0.35199999809265137,
+0.35199999809265137,
+1.0
+],
+"vertexOffset": 88790,
+"vertexCount": 805,
+"indexOffset": 547443,
+"indexCount": 5268
+},
+{
+"body": "hej90_knee_l_Mirror_1",
+"rgba": [
+0.35199999809265137,
+0.35199999809265137,
+0.35199999809265137,
+1.0
+],
+"vertexOffset": 89595,
+"vertexCount": 803,
+"indexOffset": 552711,
+"indexCount": 5268
+},
+{
+"body": "hej90_leg_abduction_l_1",
+"rgba": [
+0.35199999809265137,
+0.35199999809265137,
+0.35199999809265137,
+1.0
+],
+"vertexOffset": 90398,
+"vertexCount": 506,
+"indexOffset": 557979,
+"indexCount": 3228
+},
+{
+"body": "hej90_leg_abduction_r_1",
+"rgba": [
+0.35199999809265137,
+0.35199999809265137,
+0.35199999809265137,
+1.0
+],
+"vertexOffset": 90904,
+"vertexCount": 513,
+"indexOffset": 561207,
+"indexCount": 3264
+},
+{
+"body": "hip_rotation_1",
+"rgba": [
+0.35199999809265137,
+0.35199999809265137,
+0.35199999809265137,
+1.0
+],
+"vertexOffset": 91417,
+"vertexCount": 325,
+"indexOffset": 564471,
+"indexCount": 2202
+},
+{
+"body": "leg_flexion_abduction_connector_l_1",
+"rgba": [
+0.35199999809265137,
+0.35199999809265137,
+0.35199999809265137,
+1.0
+],
+"vertexOffset": 91742,
+"vertexCount": 183,
+"indexOffset": 566673,
+"indexCount": 1416
+},
+{
+"body": "leg_flexion_abduction_connector_r_1",
+"rgba": [
+0.35199999809265137,
+0.35199999809265137,
+0.35199999809265137,
+1.0
+],
+"vertexOffset": 91925,
+"vertexCount": 182,
+"indexOffset": 568089,
+"indexCount": 1416
+},
+{
+"body": "shoulder_arm_connector_l_1",
+"rgba": [
+0.35199999809265137,
+0.35199999809265137,
+0.35199999809265137,
+1.0
+],
+"vertexOffset": 92107,
+"vertexCount": 163,
+"indexOffset": 569505,
+"indexCount": 1212
+},
+{
+"body": "shoulder_arm_connector_r_1",
+"rgba": [
+0.35199999809265137,
+0.35199999809265137,
+0.35199999809265137,
+1.0
+],
+"vertexOffset": 92270,
+"vertexCount": 162,
+"indexOffset": 570717,
+"indexCount": 1212
+},
+{
+"body": "shoulder_connector_l_1",
+"rgba": [
+0.35199999809265137,
+0.35199999809265137,
+0.35199999809265137,
+1.0
+],
+"vertexOffset": 92432,
+"vertexCount": 237,
+"indexOffset": 571929,
+"indexCount": 1602
+},
+{
+"body": "shoulder_connector_r_1",
+"rgba": [
+0.35199999809265137,
+0.35199999809265137,
+0.35199999809265137,
+1.0
+],
+"vertexOffset": 92669,
+"vertexCount": 230,
+"indexOffset": 573531,
+"indexCount": 1554
+},
+{
+"body": "universal_joint_connector_l_1",
+"rgba": [
+0.35199999809265137,
+0.35199999809265137,
+0.35199999809265137,
+1.0
+],
+"vertexOffset": 92899,
+"vertexCount": 2681,
+"indexOffset": 575085,
+"indexCount": 16692
+},
+{
+"body": "universal_joint_connector_l_Mirror_1",
+"rgba": [
+0.35199999809265137,
+0.35199999809265137,
+0.35199999809265137,
+1.0
+],
+"vertexOffset": 95580,
+"vertexCount": 2675,
+"indexOffset": 591777,
+"indexCount": 16692
+},
+{
+"body": "universal_joint_cross_l_1",
+"rgba": [
+0.35199999809265137,
+0.35199999809265137,
+0.35199999809265137,
+1.0
+],
+"vertexOffset": 98255,
+"vertexCount": 71,
+"indexOffset": 608469,
+"indexCount": 414
+},
+{
+"body": "universal_joint_cross_l_Mirror_1",
+"rgba": [
+0.35199999809265137,
+0.35199999809265137,
+0.35199999809265137,
+1.0
+],
+"vertexOffset": 98326,
+"vertexCount": 71,
+"indexOffset": 608883,
+"indexCount": 414
+}
+]
+}
