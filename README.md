@@ -12,7 +12,7 @@ when WebGPU isn't available. The policy runs through a JavaScript port of the ro
 | --- | --- |
 | hold <kbd>W</kbd> / <kbd>S</kbd> | walk forward / back (0.8 m/s) |
 | hold <kbd>A</kbd> / <kbd>D</kbd> | walk left / right (0.6 m/s) |
-| hold <kbd>Q</kbd> / <kbd>E</kbd> | turn left / right (0.6 rad/s) |
+| hold <kbd>Q</kbd> / <kbd>E</kbd> | turn left / right (0.6 rad/s); alone, it walks a tight circle (0.35 m/s forward), see below |
 | <kbd>Space</kbd> | stop (release all keys) |
 | <kbd>R</kbd> | reset to standing at the origin |
 | mouse | drag to orbit, scroll to zoom (the camera follows the robot) |
@@ -101,6 +101,8 @@ the controls plant (parallel ankle, drive models) with the walk limits lifted. B
 
 The demo's training-model sim walks a little further forward and a little less sideways than the controls plant.
 The pattern is the same in both: it walks forward and sideways, turns, barely moves at 0.3 m/s or backward, and doesn't fall.
+
+**Turning on the spot doesn't really turn it.** The yaw above is `base_link`'s, which is the upper torso (the goal's head body). On a pure turn command the goal head only rotates, and the policy follows it mostly by twisting: over 5 s at 0.6 rad/s (2.9 rad) the feet turn 1.4 rad while `torso_axial_rotation` ends at 0.6 rad and both hip rotations near -0.8 rad. With 0.35 m/s forward added it steps round a ~0.6 m circle, the feet follow the full turn and the torso stays straight (`node test/turn_trace.mjs '1:0,0,0;5:0.35,0,0.6;2:0,0,0'`). So Q/E alone command that.
 
 ## Swapping in another bundle
 

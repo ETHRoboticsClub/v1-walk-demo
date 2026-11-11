@@ -14,6 +14,11 @@ import * as quat from './quat.js';
 
 // Demo speed limits: the walk policy does not step below ~0.4 m/s, so a held key commands the limit.
 const WALK = { maxForward: 0.8, maxLateral: 0.6, maxYaw: 0.6 };
+// A turn on the spot (Q/E alone) is a goal head that only rotates: the policy answers it by twisting
+// the torso and hips (base_link, the goal's head body, is the upper torso) and barely steps (feet 1.4 of
+// 2.9 rad over 5 s at 0.6 rad/s, torso 0.6 rad, hips -0.8 rad). With 0.35 m/s forward it steps round a
+// ~0.6 m circle with the feet following and the torso straight (test/turn_trace.mjs), so Q/E alone walk that.
+const TURN_FORWARD = 0.35;
 // The goal's head point in base_link (ONNX metadata head_point_in_body), for the start offset.
 const HEAD_IN_BODY = [0.05, 0, 0.9];
 
@@ -221,7 +226,9 @@ async function main() {
   const updateCommand = () => {
     const v = [0, 0, 0];
     for (const k of held) KEYS[k].forEach((x, i) => (v[i] += x));
-    demo.setCommand([v[0] * WALK.maxForward, v[1] * WALK.maxLateral, v[2] * WALK.maxYaw].map((x) => x + 0)); // +0: no -0
+    const cmd = [v[0] * WALK.maxForward, v[1] * WALK.maxLateral, v[2] * WALK.maxYaw];
+    if (cmd[2] !== 0 && cmd[0] === 0 && cmd[1] === 0) cmd[0] = TURN_FORWARD;
+    demo.setCommand(cmd.map((x) => x + 0)); // +0: no -0
     document.querySelectorAll('kbd[data-k]').forEach((el) => el.classList.toggle('on', held.has(el.dataset.k)));
   };
   let resetRequested = false;
