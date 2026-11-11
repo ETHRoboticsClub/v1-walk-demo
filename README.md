@@ -18,7 +18,8 @@ when WebGPU isn't available. The policy runs through a JavaScript port of the ro
 | <kbd>R</kbd> | reset to standing at the origin |
 | mouse | drag to orbit, scroll to zoom (the camera follows the robot) |
 
-On touch devices (or with `?touch=1`; `?touch=0` hides them) two thumbsticks appear. The left one walks (up forward,
+On touch devices two thumbsticks appear. The *sticks* button in the help panel turns them on or off on any device
+(remembered per browser), and `?touch=1` / `?touch=0` forces them. The left one walks (up forward,
 left/right sideways) and the right one turns (left/right). Both are analog, scaled to the same limits as the keys, and
 work at the same time. Releasing a stick stops that motion. A turn alone walks the tight circle, slower for a partial
 turn. Drag elsewhere to orbit, pinch to zoom, and use the *reset* button in the help panel instead of <kbd>R</kbd>.

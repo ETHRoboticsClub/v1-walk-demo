@@ -66,8 +66,8 @@
 </div>
 <div id="help" class="panel">
   <div class="key-only">Hold <kbd data-k="KeyW">W</kbd><kbd data-k="KeyA">A</kbd><kbd data-k="KeyS">S</kbd><kbd data-k="KeyD">D</kbd> to walk, <kbd data-k="KeyQ">Q</kbd><kbd data-k="KeyE">E</kbd> to turn ·
-    <kbd>Space</kbd> stop · <kbd>R</kbd> reset · <kbd>C</kbd> camera: <button id="cam" type="button" class="cam on">chase</button> · drag to orbit, scroll to zoom</div>
-  <div class="touch-only">Left stick walks, right stick turns · drag to orbit, pinch to zoom · camera: <button id="cam-touch" type="button" class="cam on">chase</button> · <button id="reset" type="button" class="cam">reset</button></div>
+    <kbd>Space</kbd> stop · <kbd>R</kbd> reset · <kbd>C</kbd> camera: <button id="cam" type="button" class="cam on">chase</button> · drag to orbit, scroll to zoom · sticks: <button type="button" class="cam sticks">off</button></div>
+  <div class="touch-only">Left stick walks, right stick turns · drag to orbit, pinch to zoom · camera: <button id="cam-touch" type="button" class="cam on">chase</button> · <button id="reset" type="button" class="cam">reset</button> · sticks: <button type="button" class="cam sticks">on</button></div>
   <div class="muted">The robot lags the command (about 60 % of the distance; backward about a quarter). <a href="https://github.com/ETHRoboticsClub/v1-walk-demo">Source and notes</a></div>
 </div>
 <div id="status" class="panel">Loading…</div>
@@ -85,6 +85,6 @@
   }
 }
 </script>
-<script type="module" src="src/main.js"></script>
+<script type="module" src="src/main.js?v=2"></script>
 </body>
 </html>

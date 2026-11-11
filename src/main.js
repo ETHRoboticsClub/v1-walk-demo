@@ -2,7 +2,8 @@
 // and renders it with three.js. URL parameters:
 //   ?bundle=<name>   a folder under models/ (default walkglide2-2h; walkglide is the earlier policy), or a URL of a bundle folder
 //   ?ep=wasm|webgpu  force the onnxruntime execution provider (default: WebGPU when available)
-//   ?touch=1|0       show or hide the on-screen thumbsticks (default: shown on touch devices)
+//   ?touch=1|0       show or hide the on-screen thumbsticks (default: the sticks button's remembered choice,
+//                    else shown on touch devices)
 
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
@@ -161,15 +162,43 @@ async function buildRobot(scene, sim) {
 
 // ---------------------------------------------------------------------------------------------
 
-// The thumbsticks: shown on touch devices (or ?touch=1), and as soon as the page sees a touch.
+// The thumbsticks. Shown or hidden by ?touch=1|0, else by the sticks button's remembered choice, else
+// on touch devices and as soon as the page sees a touch. The sticks button toggles them (remembered).
+// This runs at load, so the button works while the sim is still loading.
+(() => {
+  const stored = (() => {
+    try {
+      return localStorage.getItem('v1walk.sticks');
+    } catch {
+      return null;
+    }
+  })();
+  const want = params.get('touch') ?? (stored === 'on' ? '1' : stored === 'off' ? '0' : null);
+  const set = (on) => {
+    document.body.classList.toggle('touch', on);
+    document.querySelectorAll('button.sticks').forEach((b) => {
+      b.textContent = on ? 'on' : 'off';
+      b.classList.toggle('on', on);
+    });
+  };
+  set(want === '1' || (want === null && matchMedia('(any-pointer: coarse)').matches));
+  if (want === null) addEventListener('pointerdown', (e) => e.pointerType === 'touch' && set(true), { capture: true });
+  document.querySelectorAll('button.sticks').forEach((b) =>
+    b.addEventListener('click', () => {
+      const on = !document.body.classList.contains('touch');
+      set(on);
+      try {
+        localStorage.setItem('v1walk.sticks', on ? 'on' : 'off');
+      } catch {}
+    }),
+  );
+
+})();
+
 // The left stick walks (up forward, sideways left/right), the right stick turns (left/right only).
 // Each follows its own pointer, so both work at once; releasing a stick zeroes it.
 const STICK_DEADZONE = 0.12;
 function setupSticks(sticks, onChange) {
-  const want = params.get('touch');
-  const show = () => document.body.classList.add('touch');
-  if (want === '1' || (want !== '0' && matchMedia('(any-pointer: coarse)').matches)) show();
-  if (want !== '0') addEventListener('pointerdown', (e) => e.pointerType === 'touch' && show(), { capture: true });
 
   const bind = (el, horizontalOnly, set) => {
     if (!el) return;
