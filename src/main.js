@@ -1,6 +1,6 @@
 // The page: loads MuJoCo, the policy bundle and the robot's meshes, runs the sim loop in real time
 // and renders it with three.js. URL parameters:
-//   ?bundle=<name>   a folder under models/ (default walkglide), or a URL of a bundle folder
+//   ?bundle=<name>   a folder under models/ (default walkglide2-2h; walkglide is the earlier policy), or a URL of a bundle folder
 //   ?ep=wasm|webgpu  force the onnxruntime execution provider (default: WebGPU when available)
 
 import * as THREE from 'three';
@@ -12,7 +12,7 @@ import yaml from 'js-yaml';
 import { WalkDemo } from './demo.js';
 import * as quat from './quat.js';
 
-// Demo speed limits: the walk policy does not step below ~0.4 m/s, so a held key commands the limit.
+// Demo speed limits (the bundle's walk: block overrides them); a held key commands the limit.
 const WALK = { maxForward: 0.8, maxLateral: 0.6, maxYaw: 0.6 };
 // A turn on the spot (Q/E alone) is a goal head that only rotates: the policy answers it by twisting
 // the torso and hips (base_link, the goal's head body, is the upper torso) and barely steps (feet 1.4 of
@@ -31,7 +31,7 @@ const status = (text, error = false) => {
 };
 
 const params = new URLSearchParams(location.search);
-const bundleParam = params.get('bundle') || 'walkglide';
+const bundleParam = params.get('bundle') || 'walkglide2-2h';
 const bundleUrl = /^https?:/.test(bundleParam) ? bundleParam.replace(/\/?$/, '/') : new URL(`../models/${bundleParam}/`, import.meta.url).href;
 const assetsUrl = new URL('../assets/', import.meta.url).href;
 

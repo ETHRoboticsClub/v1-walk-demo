@@ -20,9 +20,9 @@ when WebGPU isn't available. The policy runs through a JavaScript port of the ro
 
 Driving works like the robot dashboard's hold-to-drive pad. While a key is held, the page sends the velocity every
 0.1 s with a 0.5 s expiry, and it sends one zero when the key is released. The virtual root ramps toward the command
-at 0.8 m/s² (1.5 rad/s² for yaw). This policy doesn't step below about 0.4 m/s, so a held key commands the full
-limit. Commands of 0.3 m/s or less barely move the robot, and walking backward doesn't work: the robot shuffles a few
-centimetres.
+at 0.8 m/s² (1.5 rad/s² for yaw). A held key commands the full
+limit. The robot lags the command: it covers about 60 % of the commanded distance forward and sideways, and about a
+quarter of it backward.
 
 The HUD shows:
 - the commanded speeds (the virtual root's ramped speeds) next to the robot's actual speeds, in its heading frame
@@ -36,9 +36,10 @@ slows down; policy steps are never skipped.
 
 ## What runs
 
-- **Policy:** `models/walkglide/policy.onnx` with its `instanttrack.yaml`. It is the deploy bundle of
-  [instantTrack-v1](https://github.com/ETHRoboticsClub/instantTrack-v1) commit `e5e1fd9`, run
-  `v1-teleop-walkglide-s0` (iteration 33993). The policy was trained on BONES-SEED motion data. Only the exported
+- **Policy:** `models/walkglide2-2h/policy.onnx` with its `instanttrack.yaml` (the default). It is the deploy
+  bundle of [instantTrack-v1](https://github.com/ETHRoboticsClub/instantTrack-v1) commit `cdec3b6`, run
+  `v1-teleop-walkglide2-2h-s0` (iteration 71280), the current candidate for the robot. The earlier policy
+  `models/walkglide/` (commit `e5e1fd9`, run `v1-teleop-walkglide-s0`, iteration 33993) loads with `?bundle=walkglide`. The policy was trained on BONES-SEED motion data. Only the exported
   network is published here.
 - **Runtime** (`src/instanttrack.js`, `src/quat.js`): a port of `ethrc_policy_core/instanttrack/{runtime,goal,walk,bundle}.py`
   from ETHRC-Humanoid-Controls, limited to the velocity path:
@@ -126,7 +127,8 @@ src/instanttrack.js      the runtime port: bundle, GoalStream, VirtualRoot, Inst
 src/quat.js              the robot runtime's quaternion math
 src/sim.js               the MuJoCo model wrapper
 assets/                  v1_physics.xml, v1_visual.{json,bin} (tools/build_assets.py)
-models/walkglide/        the published policy bundle
+models/walkglide2-2h/     the published policy bundle (default)
+models/walkglide/        the earlier policy (?bundle=walkglide)
 test/headless.mjs        the headless check
 tools/build_assets.py    rebuilds assets/ from an instantTrack-v1 checkout (data/v1_description)
 ```

@@ -9,7 +9,7 @@ import yaml from 'js-yaml';
 import { WalkDemo } from '../src/demo.js';
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
-const bundleDir = path.resolve(ROOT, process.argv[3] || 'models/walkglide');
+const bundleDir = path.resolve(ROOT, process.argv[3] || 'models/walkglide2-2h');
 const mujoco = await loadMujoco();
 ort.env.wasm.numThreads = 1;
 const xml = fs.readFileSync(path.join(ROOT, 'assets/v1_physics.xml'), 'utf8');

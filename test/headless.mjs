@@ -4,7 +4,7 @@
 // and prints the base displacement at each segment's end in the start frame.
 //
 //   node test/headless.mjs                       # the reference suite
-//   node test/headless.mjs '2:0,0,0;4:0.5,0,0;3:0,0,0' [--bundle models/walkglide]
+//   node test/headless.mjs '2:0,0,0;4:0.5,0,0;3:0,0,0' [--bundle models/walkglide2-2h]
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -17,7 +17,7 @@ import { WalkDemo } from '../src/demo.js';
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const args = process.argv.slice(2);
 const flag = (k, d) => (args.includes(k) ? args[args.indexOf(k) + 1] : d);
-const bundleDir = path.resolve(ROOT, flag('--bundle', 'models/walkglide'));
+const bundleDir = path.resolve(ROOT, flag('--bundle', 'models/walkglide2-2h'));
 const positional = args.filter((a, i) => !a.startsWith('--') && !(i > 0 && args[i - 1].startsWith('--')));
 
 // The demo's walk limits (main.js); they cover every command below.
