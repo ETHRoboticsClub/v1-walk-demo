@@ -27,8 +27,8 @@ turn. Drag elsewhere to orbit, pinch to zoom, and use the *reset* button in the 
 Driving works like the robot dashboard's hold-to-drive pad. While a key is held, the page sends the velocity every
 0.1 s with a 0.5 s expiry, and it sends one zero when the key is released. The virtual root ramps toward the command
 at 0.8 m/s² (1.5 rad/s² for yaw). A held key commands the full
-limit. The robot lags the command: it covers about 60 % of the commanded distance forward and sideways, and about a
-quarter of it backward.
+limit. The robot lags the command. With the default policy it covers roughly 55–70 % of the commanded distance in
+every direction (the previous `walkglide2-2h` policy: about 60 % forward and sideways, a quarter backward).
 
 The HUD shows:
 - the commanded speeds (the virtual root's ramped speeds) next to the robot's actual speeds, in its heading frame
@@ -42,11 +42,17 @@ slows down; policy steps are never skipped.
 
 ## What runs
 
-- **Policy:** `models/walkglide2-2h/policy.onnx` with its `instanttrack.yaml` (the default). It is the deploy
-  bundle of [instantTrack-v1](https://github.com/ETHRoboticsClub/instantTrack-v1) commit `cdec3b6`, run
-  `v1-teleop-walkglide2-2h-s0` (iteration 71280), the current candidate for the robot. The earlier policy
-  `models/walkglide/` (commit `e5e1fd9`, run `v1-teleop-walkglide-s0`, iteration 33993) loads with `?bundle=walkglide`. The policy was trained on BONES-SEED motion data. Only the exported
-  network is published here.
+- **Policies** (the menu at the top left, or `?bundle=<name>`). All are deploy bundles of
+  [instantTrack-v1](https://github.com/ETHRoboticsClub/instantTrack-v1), trained on BONES-SEED motion data. Only the
+  exported networks are published here.
+  - `models/walk-push-1h/` (default): commit `8a36fe9`, run `v1-teleop-walkglide2-wr-push-s1`, iteration 34200
+    (about 1 h on one L40S). Direction-balanced walking resets (`--walk_reset 0.2`) and strong pushes
+    (`--push 1,3,1.2,0.6`). In the controls sim it walks 56–69 % of the command in every direction and falls far
+    less from 2 m/s shoves than the 2 h policy.
+  - `models/walk-vel-1h/`: same commit, run `v1-teleop-walkglide2-wr-vel2-s2`, iteration 34200. Walking resets plus
+    `--root_vel_reward 2.0`: the most even walking (60–80 % in every direction), slightly worse tracking.
+  - `models/walkglide2-2h/`: commit `cdec3b6`, run `v1-teleop-walkglide2-2h-s0`, iteration 71280, the previous default.
+  - `models/walkglide/`: commit `e5e1fd9`, run `v1-teleop-walkglide-s0`, iteration 33993, the first walking policy.
 - **Runtime** (`src/instanttrack.js`, `src/quat.js`): a port of `ethrc_policy_core/instanttrack/{runtime,goal,walk,bundle}.py`
   from ETHRC-Humanoid-Controls, limited to the velocity path:
   - A planar velocity walks a `VirtualRoot` (accel limits, turn then walk) that carries the bundle's standing goal.
@@ -115,7 +121,7 @@ The pattern is the same in both: it walks forward and sideways, turns, barely mo
 ## Swapping in another bundle
 
 Put an `instanttrack/v1` bundle (`instanttrack.yaml` plus its ONNX, from `tools/export_onnx.py --live --bundle`) in
-`models/<name>/` and open `?bundle=<name>`. Any URL of a bundle folder that serves CORS works too:
+`models/<name>/` and open `?bundle=<name>`; add it to `POLICIES` in `src/main.js` to list it in the menu. Any URL of a bundle folder that serves CORS works too:
 `?bundle=https://…/my-bundle/`.
 
 The joints must be the V1's 22, in the bundle's order. The PD gains come from the ONNX metadata
@@ -133,8 +139,7 @@ src/instanttrack.js      the runtime port: bundle, GoalStream, VirtualRoot, Inst
 src/quat.js              the robot runtime's quaternion math
 src/sim.js               the MuJoCo model wrapper
 assets/                  v1_physics.xml, v1_visual.{json,bin} (tools/build_assets.py)
-models/walkglide2-2h/     the published policy bundle (default)
-models/walkglide/        the earlier policy (?bundle=walkglide)
+models/<name>/           the published policy bundles (POLICIES in src/main.js; walk-push-1h is the default)
 test/headless.mjs        the headless check
 tools/build_assets.py    rebuilds assets/ from an instantTrack-v1 checkout (data/v1_description)
 ```

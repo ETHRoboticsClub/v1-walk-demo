@@ -29,6 +29,8 @@
   #status.error { border-color: var(--bad); color: var(--bad); }
   #banner { top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 15px; display: none; text-align: center; }
   a { color: var(--accent); }
+  #policy { font: inherit; color: var(--text); background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; padding: 1px 4px; max-width: 190px; }
+  #policy option { background: #11161c; }
   @media (max-width: 640px) { #hud { min-width: 0; font-size: 12px; } #status { top: auto; bottom: 120px; } }
   /* thumbsticks (touch devices, or ?touch=1): left walks, right turns */
   .touch-only, .stick { display: none; }
@@ -59,7 +61,9 @@
     <tr><td>left m/s</td><td class="num" id="cl">0.00</td><td class="num" id="al">0.00</td></tr>
     <tr><td>yaw rad/s</td><td class="num" id="cy">0.00</td><td class="num" id="ay">0.00</td></tr>
   </table>
-  <div class="row" style="margin-top:6px"><span class="muted">policy backend</span><span id="ep">–</span></div>
+  <div class="row" style="margin-top:6px"><span class="muted">policy</span><select id="policy" aria-label="Policy"></select></div>
+  <div class="muted" id="pnote" style="max-width:260px;font-size:12px"></div>
+  <div class="row"><span class="muted">policy backend</span><span id="ep">–</span></div>
   <div class="row"><span class="muted">real-time factor</span><span id="rtf">–</span></div>
   <div class="row"><span class="muted">control step</span><span id="pms">–</span></div>
   <div class="row"><span class="muted">goal</span><span id="gs">–</span></div>
@@ -68,7 +72,7 @@
   <div class="key-only">Hold <kbd data-k="KeyW">W</kbd><kbd data-k="KeyA">A</kbd><kbd data-k="KeyS">S</kbd><kbd data-k="KeyD">D</kbd> to walk, <kbd data-k="KeyQ">Q</kbd><kbd data-k="KeyE">E</kbd> to turn ·
     <kbd>Space</kbd> stop · <kbd>R</kbd> reset · <kbd>C</kbd> camera: <button id="cam" type="button" class="cam on">chase</button> · drag to orbit, scroll to zoom · sticks: <button type="button" class="cam sticks">off</button></div>
   <div class="touch-only">Left stick walks, right stick turns · drag to orbit, pinch to zoom · camera: <button id="cam-touch" type="button" class="cam on">chase</button> · <button id="reset" type="button" class="cam">reset</button> · sticks: <button type="button" class="cam sticks">on</button></div>
-  <div class="muted">The robot lags the command (about 60 % of the distance; backward about a quarter). <a href="https://github.com/ETHRoboticsClub/v1-walk-demo">Source and notes</a></div>
+  <div class="muted">The robot lags the command; pick a policy at the top left. <a href="https://github.com/ETHRoboticsClub/v1-walk-demo">Source and notes</a></div>
 </div>
 <div id="status" class="panel">Loading…</div>
 <div id="stick-walk" class="stick"><span class="label">walk</span><div class="knob"></div></div>
@@ -85,6 +89,6 @@
   }
 }
 </script>
-<script type="module" src="src/main.js?v=2"></script>
+<script type="module" src="src/main.js?v=3"></script>
 </body>
 </html>

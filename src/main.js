@@ -1,6 +1,6 @@
 // The page: loads MuJoCo, the policy bundle and the robot's meshes, runs the sim loop in real time
 // and renders it with three.js. URL parameters:
-//   ?bundle=<name>   a folder under models/ (default walkglide2-2h; walkglide is the earlier policy), or a URL of a bundle folder
+//   ?bundle=<name>   a folder under models/ (default walk-push-1h; the policy menu lists POLICIES), or a URL of a bundle folder
 //   ?ep=wasm|webgpu  force the onnxruntime execution provider (default: WebGPU when available)
 //   ?touch=1|0       show or hide the on-screen thumbsticks (default: the sticks button's remembered choice,
 //                    else shown on touch devices)
@@ -32,8 +32,16 @@ const status = (text, error = false) => {
   el.style.display = text ? '' : 'none';
 };
 
+// The policy menu: bundles under models/, first is the default. Choosing one reloads with ?bundle=.
+const POLICIES = [
+  { name: 'walk-push-1h', label: 'Walk + pushes, 1 h (default)', note: 'Trained 1 h with direction-balanced walking starts and strong pushes. Walks every way, recovers best from shoves.' },
+  { name: 'walk-vel-1h', label: 'Walk + velocity reward, 1 h', note: 'Trained 1 h with direction-balanced walking starts and a velocity reward. Most even walking in every direction.' },
+  { name: 'walkglide2-2h', label: 'Glide walk, 2 h (previous)', note: 'The previous default: walks about 60 % of the command, backward about a quarter.' },
+  { name: 'walkglide', label: 'Glide walk v1 (first)', note: 'The first walking policy.' },
+];
+
 const params = new URLSearchParams(location.search);
-const bundleParam = params.get('bundle') || 'walkglide2-2h';
+const bundleParam = params.get('bundle') || POLICIES[0].name;
 const bundleUrl = /^https?:/.test(bundleParam) ? bundleParam.replace(/\/?$/, '/') : new URL(`../models/${bundleParam}/`, import.meta.url).href;
 const assetsUrl = new URL('../assets/', import.meta.url).href;
 
@@ -249,7 +257,30 @@ function setupSticks(sticks, onChange) {
 
 const KEYS = { KeyW: [1, 0, 0], KeyS: [-1, 0, 0], KeyA: [0, 1, 0], KeyD: [0, -1, 0], KeyQ: [0, 0, 1], KeyE: [0, 0, -1] };
 
+function setupPolicyMenu() {
+  const sel = $('policy');
+  const known = POLICIES.some((p) => p.name === bundleParam);
+  for (const p of known ? POLICIES : [...POLICIES, { name: bundleParam, label: 'custom: ' + bundleParam.replace(/^.*\/(?=[^/]+\/?$)/, ''), note: '' }]) {
+    const o = document.createElement('option');
+    o.value = p.name;
+    o.textContent = p.label;
+    sel.append(o);
+  }
+  sel.value = bundleParam;
+  $('pnote').textContent = (POLICIES.find((p) => p.name === bundleParam) ?? { note: '' }).note;
+  sel.addEventListener('change', () => {
+    const q = new URLSearchParams(location.search);
+    if (sel.value === POLICIES[0].name) q.delete('bundle');
+    else q.set('bundle', sel.value);
+    location.search = q.toString();
+  });
+  // Keys typed while the menu has focus must not walk the robot.
+  sel.addEventListener('change', () => sel.blur());
+  sel.addEventListener('keydown', (e) => e.stopPropagation());
+}
+
 async function main() {
+  setupPolicyMenu();
   const view = buildScene();
   status('Loading MuJoCo…');
   const mujocoP = loadMujoco();
